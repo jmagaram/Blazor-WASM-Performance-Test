@@ -1,0 +1,72 @@
+﻿@page "/biglist"
+
+<style>
+    .recordHeader {
+        font-style:italic;
+        color:darkgray;
+    }
+</style>
+
+<h1>Big List</h1>
+
+<EditForm Model="@FormModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>
+            Items in list:
+            <InputNumber id="inputNumber" @bind-Value="FormModel.ItemCount" />
+        </label>
+    </p>
+    <button type="submit">Submit</button>
+</EditForm>
+<hr />
+
+<button class="btn btn-primary" @onclick="InsertAtTop">Insert at front of list</button>
+
+@for (int i = 0; i < Records.Count; i++)
+{
+    var r = Records[i];
+    <p>
+        <span class="recordHeader">Item:&nbsp;</span><span>@(i+1)</span><br />
+        <span class="recordHeader">Title:&nbsp;</span><span>@r.Title</span><br />
+        <span class="recordHeader">Notes:&nbsp;</span><span>@r.Notes</span><br />
+        <span class="recordHeader">Modified:&nbsp;</span><span>@r.Modified</span><br />
+        <span class="recordHeader">Important:&nbsp;</span><span>@r.Important</span><br />
+        <span class="recordHeader">Year:&nbsp;</span><span>@r.Year</span><br />
+    </p>
+}
+<hr />
+<button class="btn btn-primary" @onclick="InsertAtEnd">Add to end of list</button>
+
+@code {
+    public List<Record> Records { get; private set; }
+
+    private FormModel FormModel { get; } = new FormModel { ItemCount = 10 };
+
+    private void HandleValidSubmit()
+    {
+        InitializeRecords(FormModel.ItemCount);
+    }
+
+    protected override void OnInitialized() => InitializeRecords(10);
+
+    private void InitializeRecords(int count)
+    {
+        Records = new List<Record>();
+        for (int i = 0; i < count; i++)
+        {
+            Records.Add(new Record());
+        }
+    }
+
+    private void InsertAtEnd()
+    {
+        Records.Add(new Record());
+    }
+
+    private void InsertAtTop()
+    {
+        Records.Insert(0, new Record());
+    }
+}
