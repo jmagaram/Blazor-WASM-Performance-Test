@@ -31,8 +31,11 @@
     }
 </EditForm>
 <hr />
-<button class="btn btn-primary" @onclick="InsertAtTop">Insert at front of list</button>
-<br />
+@if (!IsRendering)
+{
+    <button class="btn btn-primary" @onclick="InsertAtTop">Insert at front of list</button>
+    <br />
+}
 @for (int i = 0; i < Records.Count; i++)
 {
     var r = Records[i];
@@ -53,25 +56,31 @@
         </tr>
     </table>
 }
-<hr />
-<button class="btn btn-primary" @onclick="InsertAtEnd">Add to end of list</button>
+@if (!IsRendering)
+{
+    <hr />
+    <button class="btn btn-primary" @onclick="InsertAtEnd">Add to end of list</button>
+}
 
 @code {
     public List<Record> Records { get; private set; }
 
-    private FormModel FormModel { get; } = new FormModel { ItemCount = 10 };
+    private FormModel FormModel { get; } = new FormModel { ItemCount = 100 };
 
     public string RenderStatus { get; set; } = "";
+
+    public bool IsRendering => RenderStatus != "";
 
     private async Task HandleValidSubmit()
     {
         RenderStatus = $"Rendering {FormModel.ItemCount} records. Please wait...";
-        await Task.Delay(FormModel.ItemCount > 200 ? 1 : 1000);
+        Records.Clear();
+        await Task.Delay(50); // long enough to get UI to re-render the status message
         InitializeRecords(FormModel.ItemCount);
         RenderStatus = "";
     }
 
-    protected override void OnInitialized() => InitializeRecords(10);
+    protected override void OnInitialized() => InitializeRecords(100);
 
     private void InitializeRecords(int count)
     {
@@ -82,13 +91,7 @@
         }
     }
 
-    private void InsertAtEnd()
-    {
-        Records.Add(new Record());
-    }
+    private void InsertAtEnd() => Records.Add(new Record());
 
-    private void InsertAtTop()
-    {
-        Records.Insert(0, new Record());
-    }
+    private void InsertAtTop() => Records.Insert(0, new Record());
 }
