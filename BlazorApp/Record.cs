@@ -7,7 +7,7 @@ namespace BlazorApp
     {
         static readonly Random _rnd = new Random();
 
-        static readonly string _characters = "abcdefghijklmnopqrstuvwxyz0123456789 !$%@*()";
+        static readonly string _characters = "abcdefghijklmnopqrstuvwxyz0123456789                 !$%@*()";
 
         public Record()
         {
