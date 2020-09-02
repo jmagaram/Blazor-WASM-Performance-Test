@@ -14,7 +14,7 @@ namespace BlazorApp
             SetRandomValues();
         }
 
-        private void SetRandomValues()
+        public void SetRandomValues()
         {
             Important = _rnd.Next() % 2 == 1;
             Title = RandomString(30);

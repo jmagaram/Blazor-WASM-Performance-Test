@@ -2,8 +2,8 @@
 
 <style>
     .recordHeader {
-        font-style:italic;
-        color:darkgray;
+        font-style: italic;
+        color: darkgray;
     }
 </style>
 
@@ -34,6 +34,8 @@
         <span class="recordHeader">Modified:&nbsp;</span><span>@r.Modified</span><br />
         <span class="recordHeader">Important:&nbsp;</span><span>@r.Important</span><br />
         <span class="recordHeader">Year:&nbsp;</span><span>@r.Year</span><br />
+        <button @onclick="()=> r.SetRandomValues()">Randomize</button>
+        <button @onclick="()=> Records.Remove(r)">Delete</button>
     </p>
 }
 <hr />
